@@ -58,23 +58,60 @@ const expirationDateMask = IMask(expirationDate, expirationDatePattern)
 
 // Numeração dos cartões Visa e Mastercard
 
- /* 
+ /*
+
+  TEMOS QUE ESCREVER AS REGRAS EM REGEX (olhar em documentações como se escreve Regex)
+
   Regra VISA:
 
-    => inicia com dígito 4 seguido de 15 dígitos
+    => inicia com dígito 4 seguido de 15 dígitos -> ^4\d{0,15}
 
   Regra Mastercard
 
-    => inicia com dígito 5, seguido de um dígito entre 1 e 5, seguido de mais 2 dígitos
+    => inicia com dígito 5, seguido de um dígito entre 1 e 5, seguido de mais 2 dígitos -> ^5[1-5]\d{0,2}
 
     OU
 
-    => inicia com dígito 22, seguido de um dígito entre 2 e 9, seguido de mais 1 dígito
+    => inicia com dígito 22, seguido de um dígito entre 2 e 9, seguido de mais 1 dígito -> ^22[2-9]\d{0,1}
 
     OU
 
-    => inicia com dígito 2, seguido de um dígito entre 3 e 7, seguido de mais 2 dígitos
+    => inicia com dígito 2, seguido de um dígito entre 3 e 7, seguido de mais 2 dígitos -> ^2[3-7]\d{0,2}
 
-    => todas as condições acima são seguidas por 12 dígitos
+    => todas as condições acima são seguidas por 12 dígitos -> (^5[1-5]\d{0,2}|^22[2-9]\d|^2[3-7]\d{0,2})\d{0,12}
      
  */
+
+const cardNumber = document.querySelector('#card-number')
+
+const cardNumberPattern = {
+  mask: [
+    {
+      mask: '0000 0000 0000 0000',
+      regex: /^4\d{0,15}/,
+      type: 'visa'
+    },
+    {
+      mask: '0000 0000 0000 0000',
+      regex: /(^5[1-5]\d{0,2}|^22[2-9]\d|^2[3-7]\d{0,2})\d{0,12}/,
+      type: 'mastercard'
+    },
+    {
+      mask: '0000 0000 0000 0000',
+      type: 'default'
+    },  
+  ],
+  dispatch: function(appended, dynamicMasked) {
+
+    const number = (dynamicMasked.value + appended).replace(/\D/g,'')
+
+    const foundMask = dynamicMasked.compiledMasks.find(function(item) {
+      return number.match(item.regex)
+    })
+
+    return foundMask
+   
+  }
+}
+
+const cardNumberMask = IMask(cardNumber, cardNumberPattern)
