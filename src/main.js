@@ -55,3 +55,26 @@ const expirationDatePattern = {
 }
 
 const expirationDateMask = IMask(expirationDate, expirationDatePattern)
+
+// Numeração dos cartões Visa e Mastercard
+
+ /* 
+  Regra VISA:
+
+    => inicia com dígito 4 seguido de 15 dígitos
+
+  Regra Mastercard
+
+    => inicia com dígito 5, seguido de um dígito entre 1 e 5, seguido de mais 2 dígitos
+
+    OU
+
+    => inicia com dígito 22, seguido de um dígito entre 2 e 9, seguido de mais 1 dígito
+
+    OU
+
+    => inicia com dígito 2, seguido de um dígito entre 3 e 7, seguido de mais 2 dígitos
+
+    => todas as condições acima são seguidas por 12 dígitos
+     
+ */
