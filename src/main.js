@@ -1,6 +1,6 @@
 import "./css/index.css";
 
-import IMask from "imask"; // instala com 'npm install imask' -> biblioteca serve para 
+import IMask from "imask"; // instala com 'npm install imask'
 
 const ccBgColor01 = document.querySelector('.cc-bg svg > g g:nth-child(1) path');
 const ccBgColor02 = document.querySelector('.cc-bg svg > g g:nth-child(2) path');
@@ -115,3 +115,55 @@ const cardNumberPattern = {
 }
 
 const cardNumberMask = IMask(cardNumber, cardNumberPattern)
+
+// Config Button
+
+const addButton = document.querySelector('#add-card')
+
+addButton.addEventListener("click", () => alert("Cartão adicionado"))
+
+document.querySelector('form').addEventListener("submit", (event) => event.preventDefault())
+
+// Config Card Holder Name
+
+const cardHolder = document.querySelector('#card-holder')
+
+cardHolder.addEventListener("input", () => {
+
+  const ccHolder = document.querySelector('.cc-holder .value')
+
+  ccHolder.innerText = cardHolder.value.length > 0 ? cardHolder.value : 'FULANO DA SILVA' // condição ternária para que, quando o input estiver vazio, ele mantenha o "FULANO DA SILVA" no cartão
+
+})
+
+// Config Card CVC
+
+function updateSecurityCode(code) {
+
+  const ccSecurity = document.querySelector('.cc-security .value')
+
+  ccSecurity.innerText = code.value.length > 0 ? code.value : '123'
+}
+
+securityCodeMask.on('accept', () => { // o on('accept') funciona assim -> o evento será acionado os dados inputados estiverem dentro dos parâmetros da nossa mask criada para o CodeMask
+
+  updateSecurityCode(securityCodeMask)
+
+})
+
+// Config Card Number
+
+function updateCardNumber(cardNumber) {
+  const ccNumber = document.querySelector('.cc-number')
+
+  ccNumber.innerText = cardNumber.value.length > 0 ? cardNumber.value : "1234 5678 9012 3456"
+}
+
+cardNumberMask.on('accept', () => {
+
+  const cardType = cardNumberMask.masked.currentMask.type // código para acessarmos o type do cartão dentro da mask
+  setCardType(cardType)
+  updateCardNumber(cardNumberMask)
+
+})
+
