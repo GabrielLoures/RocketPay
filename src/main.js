@@ -167,3 +167,14 @@ cardNumberMask.on('accept', () => {
 
 })
 
+// Config Expiration Date
+
+function updateExpirationDate(cardExpiration) {
+  const ccExpiration = document.querySelector('.cc-expiration .value')
+
+  ccExpiration.innerText = cardExpiration.value.length > 0 ? cardExpiration.value : 'MM/YY'
+}
+
+expirationDateMask.on('accept', () => {
+  updateExpirationDate(expirationDateMask)
+})
